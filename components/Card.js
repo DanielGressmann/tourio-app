@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { StyledImage } from "./StyledImage";
+import useSWR from "swr";
 
 const Article = styled.article`
   border: 1px solid black;
@@ -23,6 +24,16 @@ const Figure = styled.figure`
 `;
 
 export default function Card({ name, image, location, id }) {
+  const { data, isLoading } = useSWR("/api/places");
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  if (!data) {
+    return;
+  }
+
+  // {data.map((place) => () )}
+
   return (
     <Article>
       <Link href={`places/${id}`}>
